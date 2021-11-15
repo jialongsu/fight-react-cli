@@ -1,6 +1,6 @@
 # fight-react-cli
 
-创建react项目的脚手架
+创建react项目的cli工具
 
 ## 安装
 
