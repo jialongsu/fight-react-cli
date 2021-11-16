@@ -113,19 +113,19 @@ function createPackageJson(projectName, projectDir, templateName) {
 
 
 function install(projectName) {
- const childProcess = spawn('yarn', ['install'], { cwd: `./${projectName}` });
+  const childProcess = spawn('yarn', ['install'], { cwd: `./${projectName}` });
 
- // 使用spawn运行命令相当于新开了一个线程在这个线程中运行命令，在我们脚手架的线程中就无法输出安装日志
- // 将子线程的日志通过stdout.pipe和stderr.pipe传输给主线程
- childProcess.stdout.pipe(process.stdout); // 传输正常日志
- childProcess.stderr.pipe(process.stderr); // 传输错误日志
- // 监听结束事件
- childProcess.on('close', code => {
-   if (code !== 0) {
+  // 使用spawn运行命令相当于新开了一个线程在这个线程中运行命令，在我们脚手架的线程中就无法输出安装日志
+  // 将子线程的日志通过stdout.pipe和stderr.pipe传输给主线程
+  childProcess.stdout.pipe(process.stdout); // 传输正常日志
+  childProcess.stderr.pipe(process.stderr); // 传输错误日志
+  // 监听结束事件
+  childProcess.on('close', code => {
+    if (code !== 0) {
     return;
-   }
-   console.log(chalk.green('success'));
-   console.log(chalk.green(`启动项目运行: cd ${projectName} && yarn start`));
-   console.log(chalk.green(`打包项目: yarn run build 或者 npm run build`));
- });
+    }
+    console.log(chalk.green('success'));
+    console.log(chalk.green(`启动项目运行: cd ${projectName} && yarn start`));
+    console.log(chalk.green(`打包项目: yarn run build 或者 npm run build`));
+  });
 }

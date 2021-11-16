@@ -5,11 +5,19 @@
 ## 安装
 
 ```sh
-npm install -g fight-react-cli or yarn global add fight-react-cli
+npm install -g fight-react-cli 
+
+or 
+
+yarn global add fight-react-cli
 ```
 
 ## 使用
 
 ```sh
 fight-react-cli create your-project-name
+
+or
+
+frc create your-project-name
 ```
