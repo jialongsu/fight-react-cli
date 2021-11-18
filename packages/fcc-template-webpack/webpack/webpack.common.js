@@ -184,13 +184,14 @@ module.exports = (webpackEnv) => {
                           // 将helpers设置true，则会将这些通用函数通过模块引用的方式来使用，减少了不必要的代码
                           "helpers": true, 
                           // corejs使用runtime-corejs来开启polyfill
-                          "corejs": 2,
+                          "corejs": 3,
                           // 使用generate时，会在全局环境上注入generate的实现函数，这样会造成全局污染
                           // regenerator为true，通过模块引入的方式来调用generate
                           "regenerator": true,
                         }
-                      ]
-                    ],
+                      ],
+                      isEnvDevelopment && 'react-refresh/babel',
+                    ].filter(Boolean),
                     cacheDirectory: true,
                   }
                 },
