@@ -10,6 +10,12 @@ const resolveAppPath = (relativePath) => path.resolve(appDirectory, relativePath
 
 const buildPath = 'dist';
 
+const dllPath = resolveAppPath('dll');
+const dllFilename = 'vendor.dll.js';
+const dllFilenPath = `${dllPath}/${dllFilename}`;
+const dllJsonFilename = 'dll.manifest.json';
+const dllJsonPath = `${dllPath}/${dllJsonFilename}`;
+
 const appTsConfig = resolveAppPath('tsconfig.json');
 
 const isUseTs = fs.existsSync(appTsConfig);
@@ -20,6 +26,13 @@ module.exports = {
   appBuildPath: resolveAppPath(buildPath),
   appPublic: resolveAppPath('public'),
   appHtml: resolveAppPath('public/index.ejs'),
+  
+  dllPath,
+  dllFilename,
+  dllFilenPath,
+  dllJsonFilename,
+  dllJsonPath,
+  
   appTsConfig,
 
   isUseTs,

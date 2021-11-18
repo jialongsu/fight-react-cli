@@ -1,6 +1,7 @@
 const path = require('path');
 const glob = require('glob')
 const webpack = require('webpack');
+const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin'); // 生成html文件并自动引入打包的文件
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // 将css从js中分离为单独的css文件
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin'); // 压缩css
@@ -96,9 +97,18 @@ module.exports = (webpackEnv) => {
     // 打包输出配置
     output: {
       path: paths.appBuildPath, // 打包文件输出路径
-      filename: '[name].[contenthash:8].js', // 打包文件输出名称
-      chunkFilename: '[name].[contenthash:8].js',
-      assetModuleFilename: 'asset/[name].[contenthash:8][ext][query]', // 资源输出名称
+      filename: 
+        isEnvDevelopment ? 
+        '[name].js' : 
+        '[name].[contenthash:8].js', // 打包文件输出名称
+      chunkFilename: 
+        isEnvDevelopment ? 
+        '[name].js' : 
+        '[name].[contenthash:8].js',
+      assetModuleFilename: 
+        isEnvDevelopment ? 
+        'asset/[name][ext][query]' :
+        'asset/[name].[contenthash:8][ext][query]', // 资源输出名称
       clean: true, // 构建前清空输出目录
       pathinfo: false, // 禁止在bundle中生成文件路径信息，减小内存开销
     },
@@ -157,23 +167,14 @@ module.exports = (webpackEnv) => {
                   loader: 'babel-loader',
                   options: {
                     presets: [
-                      [
-                        "@babel/preset-env",
-                        // {
-                        //   "useBuiltIns": "usage",
-                        //   "corejs": 3.8,
-                        //   "targets": "> 0.25%, not dead",
-                        // }
-                      ],
+                      "@babel/preset-env",
                       [
                         "@babel/preset-react",
                         {
                           runtime: 'automatic',
                         }
                       ],
-                      [
-                        "@babel/preset-typescript",
-                      ]
+                      "@babel/preset-typescript",
                     ],
                     plugins: [
                       [
@@ -264,9 +265,20 @@ module.exports = (webpackEnv) => {
 
     // 插件
     plugins: [
+      isEnvProduction && 
+        new webpack.DllReferencePlugin({
+          manifest: paths.dllJsonPath
+        }),
+
       new HtmlWebPackPlugin({
         template: paths.appHtml,
       }),
+
+      isEnvProduction && 
+        new AddAssetHtmlWebpackPlugin({
+          filepath: paths.dllFilenPath,
+          publicPath: ''
+        }),
 
       isEnvProduction && 
         new MiniCssExtractPlugin({
@@ -274,7 +286,7 @@ module.exports = (webpackEnv) => {
           chunkFilename: 'css/[name].[contenthash:8].chunk.css',
         }),
 
-      isEnvProduction && new ProgressBarPlugin(),
+      // isEnvProduction && new ProgressBarPlugin(),
 
       // isEnvProduction && new BundleAnalyzerPlugin(),
       
