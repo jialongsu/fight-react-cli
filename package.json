@@ -3,6 +3,14 @@
   "version": "1.0.2",
   "description": "",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jialongsu/fight-react-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jialongsu/fight-react-cli/issues"
+  },
+  "homepage": "https://github.com/jialongsu/fight-react-cli#readme",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
